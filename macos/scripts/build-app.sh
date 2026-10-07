@@ -1,11 +1,11 @@
 #!/bin/bash
-# swift build → ContextCap.app 生成 → /Applications へコピー
+# Build locally; installation requires INSTALL_APP=1.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 swift build -c release
 
-APP=build/ContextCap.app
+APP="build/ContextCap Private.app"
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp .build/release/ContextCap "$APP/Contents/MacOS/ContextCap"
@@ -28,15 +28,12 @@ iconutil -c icns "$ICONSET" -o "$APP/Contents/Resources/AppIcon.icns"
 rm -rf "$ICONSET"
 
 # ad-hoc 署名（identifier を固定して TCC 権限が剥がれにくいようにする）
-codesign --force --sign - --identifier app.imichat.contextcap "$APP"
+xattr -cr "$APP"
+codesign --force --sign - --identifier app.shibutatsu.contextcap.private "$APP"
 
 echo "Built: $APP"
 
-if [ "${SKIP_INSTALL:-}" != "1" ]; then
-  # 起動中なら止めてから差し替える
-  pkill -x ContextCap 2>/dev/null || true
-  rm -rf /Applications/ContextCap.app
-  cp -R "$APP" /Applications/ContextCap.app
-  echo "Installed: /Applications/ContextCap.app"
-  echo "open /Applications/ContextCap.app で起動。初回は画面収録権限の許可が必要。"
+if [ "${INSTALL_APP:-}" = "1" ]; then
+  ditto "$APP" "/Applications/ContextCap Private.app"
+  echo "Installed: /Applications/ContextCap Private.app"
 fi

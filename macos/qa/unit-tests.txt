@@ -1,0 +1,40 @@
+[0/1] Planning build
+Building for debugging...
+[0/5] Write sources
+[1/5] Write swift-version--58304C5D6DBC2206.txt
+[3/6] Compiling ContextCap AppDelegate.swift
+[4/6] Emitting module ContextCap
+[4/7] Write Objects.LinkFileList
+[5/7] Linking ContextCap
+[6/7] Applying ContextCap
+Build complete! (3.19s)
+warning: '--build-system native' has been deprecated and will be removed in a future release; please report an issue at https://github.com/swiftlang/swift-package-manager/issues if you are unable to adopt the default build system.
+Test Suite 'All tests' started at 2026-10-07 18:37:29.436.
+Test Suite 'ContextCapPackageTests.xctest' started at 2026-10-07 18:37:29.439.
+Test Suite 'PrivacyTests' started at 2026-10-07 18:37:29.439.
+Test Case '-[CaptureCoreTests.PrivacyTests testBudgetAndHundredRecords]' started.
+Test Case '-[CaptureCoreTests.PrivacyTests testBudgetAndHundredRecords]' passed (0.061 seconds).
+Test Case '-[CaptureCoreTests.PrivacyTests testDatabaseLockFailsWithoutLosingExistingRecord]' started.
+Test Case '-[CaptureCoreTests.PrivacyTests testDatabaseLockFailsWithoutLosingExistingRecord]' passed (0.291 seconds).
+Test Case '-[CaptureCoreTests.PrivacyTests testDeleteAllAndReopen]' started.
+Test Case '-[CaptureCoreTests.PrivacyTests testDeleteAllAndReopen]' passed (0.007 seconds).
+Test Case '-[CaptureCoreTests.PrivacyTests testInvalidInputDoesNotSave]' started.
+Test Case '-[CaptureCoreTests.PrivacyTests testInvalidInputDoesNotSave]' passed (0.003 seconds).
+Test Case '-[CaptureCoreTests.PrivacyTests testPersistenceAndPermissions]' started.
+Test Case '-[CaptureCoreTests.PrivacyTests testPersistenceAndPermissions]' passed (0.008 seconds).
+Test Case '-[CaptureCoreTests.PrivacyTests testRetentionBoundaryDeletesBothPayloads]' started.
+Test Case '-[CaptureCoreTests.PrivacyTests testRetentionBoundaryDeletesBothPayloads]' passed (0.003 seconds).
+Test Case '-[CaptureCoreTests.PrivacyTests testStoppedAndRestartedSessionsRejectLateResults]' started.
+Test Case '-[CaptureCoreTests.PrivacyTests testStoppedAndRestartedSessionsRejectLateResults]' passed (0.001 seconds).
+Test Case '-[CaptureCoreTests.PrivacyTests testSymlinkRejected]' started.
+Test Case '-[CaptureCoreTests.PrivacyTests testSymlinkRejected]' passed (0.001 seconds).
+Test Suite 'PrivacyTests' passed at 2026-10-07 18:37:29.815.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.375 (0.376) seconds
+Test Suite 'ContextCapPackageTests.xctest' passed at 2026-10-07 18:37:29.816.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.375 (0.376) seconds
+Test Suite 'All tests' passed at 2026-10-07 18:37:29.816.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.375 (0.380) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
