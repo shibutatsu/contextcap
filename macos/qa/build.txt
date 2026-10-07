@@ -1,9 +1,13 @@
 Building for production...
+[Planning deferred tasks]
 [1 / 1]
-[2 / 5] ContextCap-product
-[3 / 6] ContextCap-product
-[5 / 6] ContextCap-product
-[6 / 6] ContextCap-product
-Build complete! (3.58秒)
+[5 / 12] CaptureCore
+[7 / 13] CaptureCore
+[13 / 16] ContextCap-product
+[14 / 17] ContextCap-product
+[16 / 17] ContextCap-product
+[17 / 17] ContextCap-product
+[19 / 19] ContextCap-product
+Build complete! (3.97秒)
 build/ContextCap Private.app: replacing existing signature
-Built: build/ContextCap Private.app
+build/ContextCap Private.app: resource fork, Finder information, or similar detritus not allowed

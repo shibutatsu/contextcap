@@ -1,7 +1,6 @@
 import AppKit
 import ScreenCaptureKit
 import ServiceManagement
-import Vision
 import CaptureCore
 
 @MainActor final class AppDelegate: NSObject, NSApplicationDelegate, SCContentSharingPickerObserver {
@@ -229,7 +228,7 @@ import CaptureCore
             do {
                 let image = try await SCScreenshotManager.captureImage(contentFilter: filter, configuration: config)
                 guard self.gate.accepts(token), !Task.isCancelled else { return }
-                let result = try await Task.detached(priority: .userInitiated) { try Self.recognize(image) }.value
+                let result = try await Task.detached(priority: .userInitiated) { try ImageRecognizer.recognize(image) }.value
                 guard self.gate.accepts(token), !Task.isCancelled else { return }
                 try self.archive?.save(image: result.0, text: result.1, at: date, retentionDays: self.days)
                 self.timeout?.invalidate(); self.timeout = nil; self.task = nil; self.refresh()
@@ -239,15 +238,6 @@ import CaptureCore
             }
         }
         refresh()
-    }
-    nonisolated private static func recognize(_ image: CGImage) throws -> (Data, String) {
-        let request = VNRecognizeTextRequest()
-        request.recognitionLevel = .accurate; request.recognitionLanguages = ["ja-JP", "en-US"]
-        request.usesLanguageCorrection = false
-        try VNImageRequestHandler(cgImage: image).perform([request])
-        let text = (request.results ?? []).compactMap { $0.topCandidates(1).first?.string }.joined(separator: "\n")
-        guard let data = NSBitmapImageRep(cgImage: image).representation(using: .jpeg, properties: [.compressionFactor: 0.8]) else { throw ArchiveError.invalidRecord }
-        return (data, text)
     }
     @objc private func changeRetention() {
         let newDays = [1,3,7][retention.indexOfSelectedItem]
