@@ -1,12 +1,14 @@
 #!/bin/bash
-# swift build → ContextCap.app 生成 → /Applications へコピー
+# Build locally; installation requires INSTALL_APP=1.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 swift build -c release
 
-APP=build/ContextCap.app
-rm -rf "$APP"
+STAGING_DIR=$(mktemp -d /private/tmp/contextcap-build.XXXXXX)
+trap 'rm -rf "$STAGING_DIR"' EXIT
+APP="$STAGING_DIR/ContextCap Private.app"
+DEST="build/ContextCap Private.app"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp .build/release/ContextCap "$APP/Contents/MacOS/ContextCap"
 cp Resources/Info.plist "$APP/Contents/Info.plist"
@@ -15,7 +17,7 @@ cp Resources/Info.plist "$APP/Contents/Info.plist"
 # .icns をリポジトリに置かないのは、マスターと二重管理になるのを避けるため。
 # sips / iconutil は macOS 標準なので追加依存は増えない。
 ICON_SRC=../assets/icon.png
-ICONSET=build/AppIcon.iconset
+ICONSET="$STAGING_DIR/AppIcon.iconset"
 rm -rf "$ICONSET"
 mkdir -p "$ICONSET"
 for spec in "16 icon_16x16" "32 icon_16x16@2x" "32 icon_32x32" "64 icon_32x32@2x" \
@@ -28,15 +30,17 @@ iconutil -c icns "$ICONSET" -o "$APP/Contents/Resources/AppIcon.icns"
 rm -rf "$ICONSET"
 
 # ad-hoc 署名（identifier を固定して TCC 権限が剥がれにくいようにする）
-codesign --force --sign - --identifier app.imichat.contextcap "$APP"
+xattr -cr "$APP"
+codesign --force --sign - --identifier app.shibutatsu.contextcap.private "$APP"
 
-echo "Built: $APP"
+codesign --verify --deep --strict "$APP"
+mkdir -p build
+rm -rf "$DEST"
+ditto --norsrc "$APP" "$DEST"
+codesign --verify --deep --strict "$DEST"
+echo "Built: $DEST"
 
-if [ "${SKIP_INSTALL:-}" != "1" ]; then
-  # 起動中なら止めてから差し替える
-  pkill -x ContextCap 2>/dev/null || true
-  rm -rf /Applications/ContextCap.app
-  cp -R "$APP" /Applications/ContextCap.app
-  echo "Installed: /Applications/ContextCap.app"
-  echo "open /Applications/ContextCap.app で起動。初回は画面収録権限の許可が必要。"
+if [ "${INSTALL_APP:-}" = "1" ]; then
+  ditto "$APP" "/Applications/ContextCap Private.app"
+  echo "Installed: /Applications/ContextCap Private.app"
 fi

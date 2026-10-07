@@ -1,0 +1,4 @@
+Building for production...
+Build complete! (0.21秒)
+/private/tmp/contextcap-build.hCcmAK/ContextCap Private.app: replacing existing signature
+Built: build/ContextCap Private.app

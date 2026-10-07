@@ -1,0 +1,14 @@
+name: macOS privacy checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test storage and session boundaries
+        run: macos/scripts/run-tests.sh
+      - name: Build application
+        run: macos/scripts/build-app.sh
