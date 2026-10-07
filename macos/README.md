@@ -39,6 +39,6 @@ open 'build/ContextCap Private.app'
 ./scripts/run-tests.sh
 ```
 
-Xcodeの既定ビルド方式でFile Providerの拡張属性による署名エラーが起きる環境では、`swift test --build-system native` で実行できます（Swift 6.4では非推奨オプション）。アプリのビルドスクリプトは生成したバンドルの拡張属性を署名前に除去します。
+Xcodeの既定ビルド方式でFile Providerの拡張属性による署名エラーが起きる環境では、`swift test --build-system native` で実行できます（Swift 6.4では非推奨オプション）。アプリのビルドスクリプトはFile Provider管理外の一時ディレクトリで署名し、コピー後にも署名を検証します。
 
 確認対象は [PRIVACY-QA.md](PRIVACY-QA.md)、実行結果は [QA-RESULTS.md](QA-RESULTS.md) に記録します。自動テストの成功と画面での動作確認は区別します。
